@@ -121,6 +121,13 @@ int main(int argc, char *argv[])
 
     std::vector<Token> tokens = tokenize(contents);
 
+    {
+        std::fstream file("./out.asm", std::ios::out);
+        file << tokens_to_asm(tokens);
+    }
+
+    system("nasm -f elf64 ./out.asm && ld -o out out.o");
+
     std::cout << tokens_to_asm(tokens) << std::endl;
     return EXIT_SUCCESS;
 }
