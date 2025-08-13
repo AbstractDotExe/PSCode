@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/PSCode.dir/src/main.cpp.o -o PSCode 

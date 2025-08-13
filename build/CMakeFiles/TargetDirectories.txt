@@ -1,0 +1,3 @@
+/home/paul/projects/other/PSCode/build/CMakeFiles/PSCode.dir
+/home/paul/projects/other/PSCode/build/CMakeFiles/edit_cache.dir
+/home/paul/projects/other/PSCode/build/CMakeFiles/rebuild_cache.dir
