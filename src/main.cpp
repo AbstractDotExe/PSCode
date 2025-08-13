@@ -52,13 +52,13 @@ std::vector<Token> tokenize(const std::string &str)
         else if (std::isdigit(c))
         {
             buffer.push_back(c);
-            while (std::isdigit(str.at(i)))
+            while (i + 1 < str.length() && std::isdigit(str.at(i + 1)))
             {
-                buffer.push_back(str.at(i));
+                buffer.push_back(str.at(i + 1));
                 i++;
             }
-            i--;
             tokens.push_back({.type = TokenType::int_lit, .value = buffer});
+            buffer.clear();
         }
         else if (c == ';')
         {
@@ -78,6 +78,30 @@ std::vector<Token> tokenize(const std::string &str)
     return tokens;
 }
 
+std::string tokens_to_asm(const std::vector<Token> &tokens)
+{
+    std::stringstream output;
+    output << "global _start\n_start:\n";
+    for (int i = 0; i < tokens.size(); i++)
+    {
+        const Token &token = tokens.at(i);
+
+        if (token.type == TokenType::_return)
+        {
+            if (i + 1 < tokens.size() && tokens.at(i + 1).type == TokenType::int_lit)
+            {
+                if (i + 2 < tokens.size() && tokens.at(i + 2).type == TokenType::semi)
+                {
+                    output << "    mov rax, 60\n";
+                    output << "    mov rdi, " << tokens.at(i + 1).value.value() << "\n";
+                    output << "    syscall";
+                }
+            }
+        }
+    }
+    return output.str();
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 2)
@@ -95,8 +119,8 @@ int main(int argc, char *argv[])
         contents = contents_stream.str();
     }
 
-    std::vector<Token> thing = tokenize(contents);
+    std::vector<Token> tokens = tokenize(contents);
 
-    std::cout << contents << std::endl;
+    std::cout << tokens_to_asm(tokens) << std::endl;
     return EXIT_SUCCESS;
 }
