@@ -1,6 +1,18 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <optional>
+
+enum class TokenType{
+    _return,
+    int_lit,
+    semi
+};
+
+struct Token{
+    TokenType type;
+    std::optional<std::string> value;
+};
 
 int main(int argc, char* argv[]){
     if(argc != 2){
